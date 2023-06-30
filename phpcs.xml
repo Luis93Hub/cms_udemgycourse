@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="drupal_core">
+  <description>Default PHP CodeSniffer configuration for Drupal core.</description>
+  <file>.</file>
+  <arg name="extensions" value="inc,info,install,module,php,profile,test,theme"/>
+  <!-- <rule ref="vendor/drupal/coder/coder_sniffer/Drupal"> -->
+  <!-- <rule ref="vendor/drupal/coder/coder_sniffer/DrupalPractice"> -->
+  <rule ref="vendor/squizlabs/php_codesniffer/src/Standards/PSR12">
+  </rule>
+
+
+</ruleset>

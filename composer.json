@@ -1,0 +1,22 @@
+{
+    "name": "luis/html",
+    "autoload": {
+        "psr-4": {
+            "Luis\\Html\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DDEV User",
+            "email": "nobody@example.com"
+        }
+    ],
+    "require": {
+        "drupal/coder": "^8.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

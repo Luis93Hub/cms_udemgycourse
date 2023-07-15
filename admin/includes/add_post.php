@@ -55,8 +55,12 @@ post_date,post_image, post_content,post_tags,post_status) ";
   </div>
 
     <div class="form-group">
-    <label for="post_status">Post Status</label>
-      <input type="text" class="form-control" name="post_status">
+    <select name="post_status" id="">
+      <option value="draft">Post Status</option>
+      <option value="published">Published</option>
+      <option value="draft">Draft</option>
+    </select>
+
   </div>
 
   <div class="form-group">

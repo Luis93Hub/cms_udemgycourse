@@ -13,17 +13,23 @@
 <?php
 if (isset($_GET['p_id'])) {
     $the_post_id = $_GET['p_id'];
-}
+
+    $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $the_post_id ";
+    $send_query = mysqli_query($connection, $view_query);
+    if (!$send_query) {
+        die("QUERY FAILED");
+    }
+
         $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
         $select_all_posts_query = mysqli_query($connection, $query);
 
-while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
-    $post_title = $row['post_title'];
-    $post_author = $row['post_author'];
-    $post_date = $row['post_date'];
-    $post_image = $row['post_image'];
-    $post_content = $row['post_content'];
-    ?>
+    while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
+        $post_title = $row['post_title'];
+        $post_author = $row['post_author'];
+        $post_date = $row['post_date'];
+        $post_image = $row['post_image'];
+        $post_content = $row['post_content'];
+        ?>
 
                 <h1 class="page-header">
                     Page Heading
@@ -45,7 +51,14 @@ while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
                 <!-- <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a> -->
                 <hr>
 
-<?php } ?>
+    <?php }
+} else {
+    header("Location: index.php");
+}
+
+
+
+?>
 
 
 

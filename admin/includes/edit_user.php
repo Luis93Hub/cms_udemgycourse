@@ -32,7 +32,7 @@ if (isset($_POST['edit_user'])) {
 
 // move_uploaded_file($post_image_temp, "../images/$post_image");
 
-    $query = "SELECT ranSalt FROM users";
+    $query = "SELECT randSalt FROM users";
     $select_randSalt_query = mysqli_query($connection, $query);
     if (!$select_randSalt_query) {
         die("QUERY Failed" . mysqli_error($connection));
@@ -68,7 +68,7 @@ if (isset($_POST['edit_user'])) {
 
   <div class="form-group">
     <select name="user_role" id="" >
-      <option value="subscriber" class=""><?php echo $user_role; ?></option>
+      <option value="echo $user_role;" class=""><?php echo $user_role; ?></option>
       <?php
         if ($user_role == 'admin') {
             echo "<option value='subscriber'>subscriber</option>";

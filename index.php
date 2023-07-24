@@ -16,7 +16,7 @@ include 'includes/db.php'; ?>
         <div class="row">
 
             <!-- Blog Entries Column -->
-            <div class="col-md-8">;
+            <div class="col-md-8">
 
             <?php
 

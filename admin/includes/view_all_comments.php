@@ -1,12 +1,56 @@
-<table class="table table-bordered table-hover">
+<?php
+if (isset($_POST['checkBoxArray'])) {
+    foreach ($_POST['checkBoxArray'] as $commentValueId) {
+        $bulk_options = $_POST['bulk_options'];
+        switch ($bulk_options) {
+            case 'approved':
+                $query = "UPDATE comments SET comment_status = '{$bulk_options}' WHERE comment_id = '{$commentValueId}' ";
+                $update_to_approved_status = mysqli_query($connection, $query);
+                confirmQuery($update_to_approved_status);
+                break;
+            case 'unapproved':
+                $query = "UPDATE comments SET comment_status = '{$bulk_options}' WHERE comment_id = '{$commentValueId}' ";
+                $update_to_unapproved_status = mysqli_query($connection, $query);
+                confirmQuery($update_to_unapproved_status);
+                break;
+            case 'delete':
+                $query = "DELETE FROM comments WHERE comment_id = '{$commentValueId}' ";
+                $update_to_delete_status = mysqli_query($connection, $query);
+                confirmQuery($update_to_delete_status);
+                break;
+
+            default:
+                # code...
+                break;
+        }
+    }
+}
+?>
+
+<form action="" method="post" >
+    <table class="table table-bordered table-hover">
+        <div id="bulkOptionContainer" class="col-xs-4">
+            <select  class="form-control" name="bulk_options" id="">
+                <option value="">Select Options</option>
+                <option value="approved">Approve</option>
+                <option value="unapproved">Unapprove</option>
+                <option value="delete">Delete</option>
+            </select>
+        </div>
+
+
+<div class="col-xs-4">
+    <input type="submit" name="submit" class="btn btn-success" value="Apply">
+</div>
                         <thead>
                             <tr>
+                                <th><input id="selectAllBoxes" type="checkbox"></th>
                                 <th>Id</th>
                                 <th>Author</th>
                                 <th>Comment</th>
                                 <th>Email</th>
                                 <th>Status</th>
-                                <!-- <th>In Response to</th> -->
+                                <th>In Response to</th>
                                 <th>Date</th>
                                 <th>Approve</th>
                                 <th>Unapprove</th>
@@ -14,9 +58,10 @@
                             </tr>
                         </thead>
                         <tbody>
+
 <?php
-                    $query = "SELECT * FROM comments";
-                    $select_comments = mysqli_query($connection, $query);
+$query = "SELECT * FROM comments";
+$select_comments = mysqli_query($connection, $query);
 while ($row = mysqli_fetch_assoc($select_comments)) {
     $comment_id = $row['comment_id'];
     $comment_post_id = $row['comment_post_id'];
@@ -28,6 +73,12 @@ while ($row = mysqli_fetch_assoc($select_comments)) {
 
 
     echo "<tr>";
+
+    ?>
+
+ <td><input class="checkBoxes" type="checkbox" name="checkBoxArray[]" value="<?php echo $comment_id; ?>" ></td>
+
+    <?php
     echo "<td>$comment_id</td>";
     echo "<td>$comment_author</td>";
     echo "<td>$comment_content</td>";
@@ -62,6 +113,7 @@ while ($row = mysqli_fetch_assoc($select_comments)) {
 ?>
                         </tbody>
                     </table>
+                </form>
 
 <?php
 

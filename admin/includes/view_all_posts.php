@@ -51,9 +51,7 @@ if (isset($_POST['checkBoxArray'])) {
 
 
 <form action="" method="post" >
-
 <table class="table table-bordered table-hover">
-
     <div id="bulkOptionContainer" class="col-xs-4">
         <select  class="form-control" name="bulk_options" id="">
             <option value="">Select Options</option>
@@ -63,11 +61,13 @@ if (isset($_POST['checkBoxArray'])) {
             <option value="clone">Clone</option>
         </select>
     </div>
+
+
     <div class="col-xs-4">
         <input type="submit" name="submit" class="btn btn-success" value="Apply" id="">
         <a class="btn btn-primary"  href="posts.php?source=add_post">Add New</a>
     </div>
-</form>
+
 
                         <thead>
                             <tr>
@@ -144,13 +144,21 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
         echo "<td>$post_tags</td>";
 
         $query = "SELECT * FROM comments WHERE comment_post_id = $post_id ";
+
         $send_comment_query = mysqli_query($connection, $query);
 
         $row = mysqli_fetch_array($send_comment_query);
-            $comment_id = $row['comment_id'];
+    if (isset($row['comment_id']) && $row['comment_id'] > 0) {
+        $comment_id = $row['comment_id'];
         $count_comments = mysqli_num_rows($send_comment_query);
+    } else {
+        $count_comments = 0;
+    }
+        // $comment_id = $row['comment_id'];
+        // $count_comments = mysqli_num_rows($send_comment_query);
 
         echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";
+
 
         echo "<td>$post_date</td>";
         echo "<td><a href='../post.php?p_id={$post_id}'>View Post</a></td>";
@@ -161,8 +169,9 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
 }
 ?>
 
-                    </tbody>
-                    </table>
+        </tbody>
+    </table>
+</form>
 
 <?php
 if (isset($_GET['delete'])) {

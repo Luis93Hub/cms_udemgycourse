@@ -73,7 +73,7 @@ if (isset($_POST['checkBoxArray'])) {
                             <tr>
                                 <th><input id="selectAllBoxes" type="checkbox"></th>
                                 <th>Id</th>
-                                <th>Author</th>
+                                <th>Users</th>
                                 <th>Title</th>
                                 <th>Categories</th>
                                 <th>Status</th>
@@ -95,6 +95,7 @@ $select_posts = mysqli_query($connection, $query);
 while ($row = mysqli_fetch_assoc($select_posts)) {
     $post_id = $row['post_id'];
     $post_author = $row['post_author'];
+    $post_user = $row['post_user'];
     $post_title = $row['post_title'];
     $post_category_id = $row['post_category_id'];
     $post_status = $row['post_status'];
@@ -109,9 +110,18 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
     ?>
 
 <td><input class='checkBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>
+
     <?php
         echo "<td>$post_id </td>";
+
+    if (isset($post_author)) {
         echo "<td>$post_author</td>";
+    } elseif (isset($post_user)) {
+        echo "<td>$post_user</td>";
+    }
+
+
+
         echo "<td>$post_title</td>";
 
 
@@ -137,7 +147,7 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
         $send_comment_query = mysqli_query($connection, $query);
 
         $row = mysqli_fetch_array($send_comment_query);
-        $comment_id = $row['comment_id'];
+            $comment_id = $row['comment_id'];
         $count_comments = mysqli_num_rows($send_comment_query);
 
         echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";

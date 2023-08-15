@@ -18,5 +18,8 @@
     },
     "require-dev": {
         "drupal/coder": "^8.3"
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.8"
     }
 }

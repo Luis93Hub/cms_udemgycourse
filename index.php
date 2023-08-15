@@ -33,38 +33,40 @@ include 'includes/db.php'; ?>
                 $page_1 = ($page * $per_page ) - $per_page ;
             }
 
-            $post_query_count = "SELECT * FROM posts";
-            $find_count = mysqli_query($connection, $post_query_count);
-            $count = mysqli_num_rows($find_count);
-            $count = ceil($count / 5);
 
-            $query = "SELECT * FROM posts LIMIT $page_1, $per_page ";
-            $select_all_posts_query = mysqli_query($connection, $query);
+            if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                $post_query_count = "SELECT * FROM posts";
+            } else {
+                $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
+            }
+
+                $find_count = mysqli_query($connection, $post_query_count);
+                $count = mysqli_num_rows($find_count);
+
+            if ($count < 1) {
+                echo "<h1 class='text-center'>No Posts Available</h1>";
+            } else {
+                $count = ceil($count / $per_page);
+
+                $query = "SELECT * FROM posts LIMIT $page_1, $per_page ";
+                $select_all_posts_query = mysqli_query($connection, $query);
 
 
-            while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
-                $post_id = $row['post_id'];
-                $post_title = $row['post_title'];
-                $post_author = $row['post_user'];
-                $post_date = $row['post_date'];
-                $post_image = $row['post_image'];
-                $post_content = substr($row['post_content'], 0, 100);
-                $post_status = $row['post_status'];
+                while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
+                    $post_id = $row['post_id'];
+                    $post_title = $row['post_title'];
+                    $post_author = $row['post_user'];
+                    $post_date = $row['post_date'];
+                    $post_image = $row['post_image'];
+                    $post_content = substr($row['post_content'], 0, 100);
+                    $post_status = $row['post_status'];
 
-              // If ($post_status !== 'published') {.
-                if (0) {
-                    echo "<h1 class='text-center'> NO POST SORRY </h1>";
-                } else {
                     ?>
 
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
 
-                <!-- First Blog Post -->
+                    <!-- First Blog Post -->
                 <h2>
-                    <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title ?></a>
+                    <a href = "post.php?p_id=<?php echo $post_id; ?>" > <?php echo $post_title ?></a>
                 </h2>
                 <p class="lead">
                     by <a href="author_posts.php?author=<?php echo $post_author ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author ?></a>
@@ -94,9 +96,9 @@ include 'includes/db.php'; ?>
     <?php
     for ($i = 1; $i <= $count; $i++) {
         if ($i == $page) {
-            echo "<li '><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+            echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
         } else {
-            echo "<li '><a href='index.php?page={$i}'>{$i}</a></li>";
+            echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
         }
     }
     ?>

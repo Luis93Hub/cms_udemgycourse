@@ -23,23 +23,29 @@ include 'includes/db.php'; ?>
 
             if (isset($_GET['category'])) {
                 $post_category = $_GET['category'];
-            }
 
-            $query = "SELECT * FROM posts WHERE post_category_id = $post_category";
-            $select_all_posts_query = mysqli_query($connection, $query);
+                if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                    $query = "SELECT * FROM posts WHERE post_category_id = $post_category ";
+                } else {
+                    $query = "SELECT * FROM posts WHERE post_category_id = $post_category AND post_status = 'published' ";
+                }
 
-            while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
-                $post_id = $row['post_id'];
-                $post_title = $row['post_title'];
-                $post_author = $row['post_author'];
-                $post_date = $row['post_date'];
-                $post_image = $row['post_image'];
-                $post_content = substr($row['post_content'], 0, 100);
-                ?>
+                $select_all_posts_query = mysqli_query($connection, $query);
+
+                if (mysqli_num_rows($select_all_posts_query) < 1) {
+                    echo "<h1 class='text-center'>No posts available</h1>";
+                } else {
+                    while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
+                        $post_id = $row['post_id'];
+                        $post_title = $row['post_title'];
+                        $post_author = $row['post_author'];
+                        $post_date = $row['post_date'];
+                        $post_image = $row['post_image'];
+                        $post_content = substr($row['post_content'], 0, 100);
+                        ?>
 
                 <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
+                        <?php ?>
                 </h1>
 
                 <!-- First Blog Post -->
@@ -57,7 +63,11 @@ include 'includes/db.php'; ?>
                 <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
                 <hr>
 
-            <?php } ?>
+                    <?php }
+                }
+            } else {
+                header("Location: index.php");
+            } ?>
         </div>
 
         <!-- Blog Sidebar Widgets Column -->

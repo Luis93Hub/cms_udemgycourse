@@ -69,7 +69,7 @@ if (isset($_POST['update_post'])) {
 
   <div class="form-group">
     <label for="category">Category</label>
-    <select name="post_category" id="" class="form-select" aria-label="Default select example">
+    <select name="post_category" id="">
 
       <?php
         $query = "SELECT * FROM categories";
@@ -81,7 +81,11 @@ if (isset($_POST['update_post'])) {
             $cat_id = $row['cat_id'];
             $cat_title = $row['cat_title'];
 
-            echo "<option value='$cat_id'>{$cat_title}</option>";
+            if ($cat_id == $post_category_id) {
+                echo "<option selected value='{$cat_id}'>{$cat_title}</option>";
+            } else {
+                echo "<option value='$cat_id'>{$cat_title}</option>";
+            }
         }
         ?>
     </select>
@@ -110,11 +114,6 @@ if (isset($_POST['update_post'])) {
     </select>
   </div>
 
- <!-- <div class="form-group">
-    <label for="title">Post Author</label>
-      <input value="<?php //echo $post_user; ?>" type="text" class="form-control" name="post_user">
-  </div> -->
-
   <div class="form-group">
   <select name="post_status" id="">
     <option value="<?php $post_status ?>"><?php echo $post_status; ?></option>
@@ -141,7 +140,8 @@ if (isset($_POST['update_post'])) {
 
   <div class="form-group">
     <label for="post_content">Post Content</label>
-      <textarea class="form-control" name="post_content" id="" cols="30" rows="10"><?php echo $post_content; ?> </textarea>
+      <textarea class="form-control" name="post_content" id="" cols="30" rows="10"><?php echo str_replace('\r\n', '</br>', $post_content); ?>
+     </textarea>
   </div>
 
   <div>

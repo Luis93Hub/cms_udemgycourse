@@ -51,8 +51,6 @@ function users_online()
 
 users_online();
 
-
-
 function confirmQuery($result)
 {
     global $connection;
@@ -106,4 +104,16 @@ function deleteCategories()
         $delete_query = mysqli_query($connection, $query);
         header("Location: categories.php");
     }
+}
+
+function recordCount($table)
+{
+    global $connection;
+    $query = "SELECT * FROM " . $table;
+    $select_all_post = mysqli_query($connection, $query);
+    $result = mysqli_num_rows($select_all_post);
+    if ($result != 0) {
+        confirmQuery($result);
+    }
+    return $result;
 }

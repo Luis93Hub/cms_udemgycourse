@@ -32,12 +32,11 @@
                         <i class="fa fa-file-text fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-<?php
- $query = "SELECT * FROM posts";
- $select_all_post = mysqli_query($connection, $query);
- $post_counts = mysqli_num_rows($select_all_post);
-echo "<div class='huge'>{$post_counts}</div>";
-?>
+                    <div class='huge'>
+                        <?php
+                        echo $post_count = recordCount('posts');
+                        ?>
+                    </div>
                         <div>Posts</div>
                     </div>
                 </div>
@@ -59,12 +58,11 @@ echo "<div class='huge'>{$post_counts}</div>";
                         <i class="fa fa-comments fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-<?php
- $query = "SELECT * FROM comments";
- $select_all_comments = mysqli_query($connection, $query);
- $comment_count = mysqli_num_rows($select_all_comments);
-echo "<div class='huge'>{$comment_count}</div>";
-?>
+                    <div class='huge'>
+                        <?php
+                            echo $post_count = recordCount('comments');
+                        ?>
+                    </div>
                       <div>Comments</div>
                     </div>
                 </div>
@@ -86,12 +84,8 @@ echo "<div class='huge'>{$comment_count}</div>";
                         <i class="fa fa-user fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-<?php
- $query = "SELECT * FROM users";
- $select_all_users = mysqli_query($connection, $query);
- $user_count = mysqli_num_rows($select_all_users);
-echo "<div class='huge'>{$user_count}</div>";
-?>
+                    <div class='huge'><?php echo $post_count = recordCount('users'); ?>
+                    </div>
                         <div> Users</div>
                     </div>
                 </div>
@@ -113,13 +107,9 @@ echo "<div class='huge'>{$user_count}</div>";
                         <i class="fa fa-list fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-<?php
- $query = "SELECT * FROM categories";
- $select_all_categories = mysqli_query($connection, $query);
- $category_count = mysqli_num_rows($select_all_categories);
-echo "<div class='huge'>{$category_count}</div>";
-?>
-                         <div>Categories</div>
+                    <div class='huge'><?php echo $post_count = recordCount('categories'); ?>
+                    </div>
+                    <div>Categories</div>
                     </div>
                 </div>
             </div>
@@ -162,7 +152,7 @@ function drawColColors() {
          ['Element', 'Count', { role: 'style' }],
 <?php
     $element_text = ['All Posts', 'Active Posts', 'Draft Posts' , 'Comments', 'Pending Comments', 'Users', 'Subscribers', 'Categories'];
-    $element_count = [$post_counts, $post_published_count, $post_draft_counts, $comment_count, $unapproved_comment_count, $user_count, $subscriber_count, $category_count];
+    $element_count = [$post_count, $post_published_count, $post_draft_counts, $comment_count, $unapproved_comment_count, $user_count, $subscriber_count, $category_count];
 for ($i = 0; $i < 8; $i++) {
     echo "['{$element_text[$i]}'" . "," . "{$element_count[$i]}" . "," . "'#b87333'], ";
 }

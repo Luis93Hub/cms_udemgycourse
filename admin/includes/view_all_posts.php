@@ -95,7 +95,12 @@ if (isset($_POST['checkBoxArray'])) {
                         </thead>
                         <tbody>
 <?php
-$query = "SELECT * FROM posts ORDER BY post_id DESC ";
+
+//$query = "SELECT * FROM posts ORDER BY post_id DESC ";
+$query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, ";
+$query .= "posts.post_tags, posts.post_comment_count, posts.post_date, posts.post_views_count, categories.cat_id, categories.cat_title ";
+$query .= " FROM posts ";
+$query .= " LEFT JOIN categories ON posts.post_category_id = categories.cat_id ORDER BY posts.post_id DESC";
 $select_posts = mysqli_query($connection, $query);
 
 while ($row = mysqli_fetch_assoc($select_posts)) {
@@ -110,6 +115,8 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
     $post_comment_count = $row['post_comment_count'];
     $post_date = $row['post_date'];
     $post_views_count = $row['post_views_count'];
+    $category_title = $row['cat_title'];
+    $category_id = $row['cat_id'];
 
     echo "<tr>";
 
@@ -120,29 +127,25 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
     <?php
         echo "<td>$post_id </td>";
 
-    if (isset($post_author)) {
-        echo "<td>$post_author</td>";
-    } elseif (isset($post_user)) {
-        echo "<td>$post_user</td>";
-    }
+    echo "<td>" . (!empty($post_author) ? $post_author : (!empty($post_user) ? $post_user : "")) . "</td>";
 
 
 
         echo "<td>$post_title</td>";
 
 
-        $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id}";
-        $select_categories_id = mysqli_query($connection, $query);
-        echo "<td>";
-        $categories = [];
-    while ($row = mysqli_fetch_assoc($select_categories_id)) {
-        $cat_id = $row['cat_id'];
-        $cat_title = $row['cat_title'];
-    // echo "$cat_tilte, ";
-        $categories[] = $cat_title;
-    }
-        echo implode(", ", $categories);
-        echo "</td>";
+    //     $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id}";
+    //     $select_categories_id = mysqli_query($connection, $query);
+         echo "<td>$category_title</td>";
+    //     $categories = [];
+    // while ($row = mysqli_fetch_assoc($select_categories_id)) {
+    //     $cat_id = $row['cat_id'];
+    //     $cat_title = $row['cat_title'];
+    //     $categories[] = $cat_title;
+//}
+        // echo $category_title;
+        // echo "</td>";
+
 
 
         echo "<td>$post_status</td>";
@@ -150,9 +153,7 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
         echo "<td>$post_tags</td>";
 
         $query = "SELECT * FROM comments WHERE comment_post_id = $post_id ";
-
         $send_comment_query = mysqli_query($connection, $query);
-
         $row = mysqli_fetch_array($send_comment_query);
     if (isset($row['comment_id']) && $row['comment_id'] > 0) {
         $comment_id = $row['comment_id'];
@@ -170,7 +171,7 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
         echo "<td><a href='../post.php?p_id={$post_id}'>View Post</a></td>";
         echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>";
         echo "<td><a rel='$post_id' href='javascript:void(0)' class='delete_link'>Delete</a></td>";
-        // echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete') \" href='posts.php?delete={$post_id}'>Delete</a></td>";
+        // echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete') \" href='posts . php ? delete = {$post_id}'>Delete</a></td>";
         echo "<td><a href='posts.php?reset={$post_id}'>{$post_views_count}</a></td>";
         echo "</tr>";
 }
@@ -200,6 +201,7 @@ if (isset($_GET['reset'])) {
 ?>
 
 <script>
+
     $(document).ready(function(){
         $(".delete_link").on('click', function(){
             var id = $(this).attr("rel");
@@ -209,4 +211,4 @@ if (isset($_GET['reset'])) {
 
         });
     })
-</script>
+    </script>

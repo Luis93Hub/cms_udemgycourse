@@ -125,24 +125,15 @@
 </div>
                 <!-- /.row -->
     <?php
-    $query = "SELECT * FROM posts WHERE post_status = 'published'";
-    $select_all_published_post = mysqli_query($connection, $query);
-    $post_published_count = mysqli_num_rows($select_all_published_post);
+    $post_published_count = checkStatus('posts', 'post_status', 'published');
 
+    $post_draft_counts = checkStatus('posts', 'post_status', 'draft');
 
-    $query = "SELECT * FROM posts WHERE post_status = 'draft'";
-    $select_all_draft_post = mysqli_query($connection, $query);
-    $post_draft_counts = mysqli_num_rows($select_all_draft_post);
+    $unapproved_comment_count = checkStatus('comments', 'comment_status', 'unapproved');
 
-    $query = "SELECT * FROM comments WHERE comment_status = 'unapproved'";
-    $unapproved_comments_query = mysqli_query($connection, $query);
-    $unapproved_comment_count = mysqli_num_rows($unapproved_comments_query);
-
-    $query = "SELECT * FROM users WHERE user_role = 'subscriber'";
-    $select_all_subscribers = mysqli_query($connection, $query);
-    $subscriber_count = mysqli_num_rows($select_all_subscribers);
+    $subscriber_count = checkUserRole('users', 'user_role', 'subscriber');
     ?>
-                <div class="rows">
+                 <div class="rows">
                     <script>
                         google.charts.load('current', {packages: ['corechart', 'bar']});
 google.charts.setOnLoadCallback(drawColColors);

@@ -1,6 +1,12 @@
 <?php ob_start(); ?>
 <?php include "includes/admin_header.php"; ?>
 
+<?php
+if (!is_Admin($_SESSION['username'])) {
+    header("Location: index.php");
+}
+?>
+
 
 <div id="wrapper">
 
@@ -52,4 +58,3 @@ switch ($source) {
 
         <!-- /#page-wrapper -->
 <?php include "includes/admin_footer.php"; ?>
-

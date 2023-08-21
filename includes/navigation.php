@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="../index.php">CMS Front</a>
+            <a class="navbar-brand" href="/">CMS Front</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -35,20 +35,21 @@
                         $registration_class = 'active';
                     }
 
-                    echo "<li class='$category_class' ><a href= 'category.php?category=$cat_id'>{$cat_title}</a></li>";
+                    echo "<li class='$category_class' ><a href='category/$cat_id'>{$cat_title}</a></li>";
                 }
                 ?>
 
                 <li>
-                    <a href="../admin/">Admin</a>
+                    <a href="admin">Admin</a>
                 </li>
                 <li class="<?php echo $registration_class; ?>">
-                    <a href="../registration.php">Registration</a>
+                    <a href="../registration">Registration</a>
                 </li>
                 </li>
                 <li>
-                    <a href="../contact.php">Contact</a>
+                    <a href="../contact">Contact</a>
                 </li>
+
 
 <?php
 if (isset($_SESSION['user_role'])) {

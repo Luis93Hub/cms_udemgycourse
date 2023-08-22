@@ -1,4 +1,7 @@
 <?php session_start(); ?>
+<?php '../admin/functions.php' ?>
+
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
 
@@ -35,13 +38,24 @@
                         $registration_class = 'active';
                     }
 
-                    echo "<li class='$category_class' ><a href='category/$cat_id'>{$cat_title}</a></li>";
+                    echo "<li class='$category_class' ><a href='/category/$cat_id'>{$cat_title}</a></li>";
                 }
                 ?>
 
+                    <?php if (isLoggedIn()) : ?>
                 <li>
-                    <a href="admin">Admin</a>
+                    <a href="/admin/">Admin</a>
                 </li>
+                <li>
+                    <a href='/includes/logout.php'>Admin</a>
+                </li>
+
+                    <?php else : ?>
+                <li>
+                    <a href="/login.php">Login</a>
+                </li>
+                    <?php endif; ?>
+
                 <li class="<?php echo $registration_class; ?>">
                     <a href="../registration">Registration</a>
                 </li>
@@ -56,12 +70,11 @@ if (isset($_SESSION['user_role'])) {
     if (isset($_GET['p_id'])) {
         $the_post_id = $_GET['p_id'];
         echo "<li>
-                <a href='../admin/posts.php?source=edit_post&p_id={$the_post_id}'>Edit Post</a>
-              </li>";
+            <a href='../admin/posts.php?source=edit_post&p_id={$the_post_id}'>Edit Post</a>
+        </li>";
     }
 }
 ?>
-
             </ul>
         </div>
 

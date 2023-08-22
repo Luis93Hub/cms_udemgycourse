@@ -1,8 +1,10 @@
 <?php include 'includes/db.php'; ?>
 <?php include 'includes/header.php'; ?>
+<?php include 'admin/functions.php'; ?>
+
 
     <!-- Navigation -->
-<?php include 'includes/navigation.php'; ?>
+<?php include './includes/navigation.php'; ?>
 
     <!-- Page Content -->
 <div class="container">
@@ -133,7 +135,7 @@ if (isset($_GET['p_id'])) {
             $comment_author = $row['comment_author'];
 
             ?>
-                                  <!-- Comment -->
+                <!-- Comment -->
                 <div class="media">
                     <a class="pull-left" href="#">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
@@ -150,7 +152,7 @@ if (isset($_GET['p_id'])) {
         }
     }
 } else {
-    header("Location: index.php");
+    header("Location: index");
 }
 
 

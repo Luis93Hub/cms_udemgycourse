@@ -1,14 +1,10 @@
 <?php
-
-/**
- * @file
- */
-
-include 'includes/db.php'; ?>
+include './admin/functions.php';
+include './includes/db.php'; ?>
     <?php include 'includes/header.php'; ?>
 
     <!-- Navigation -->
-    <?php include 'includes/navigation.php'; ?>
+    <?php include './includes/navigation.php'; ?>
 
     <!-- Page Content -->
     <div class="container">
@@ -66,7 +62,7 @@ include 'includes/db.php'; ?>
 
                     <!-- First Blog Post -->
                 <h2>
-                    <a href="post/<?php echo $post_id; ?>" > <?php echo $post_title ?></a>
+                    <a href="/post/<?php echo $post_id; ?>" > <?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
                     by <a href="author_posts.php?author=<?php echo $post_author ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author ?></a>

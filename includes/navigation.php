@@ -1,5 +1,5 @@
-<?php session_start(); ?>
-<?php '../admin/functions.php' ?>
+<?php '../admin/functions.php'; ?>
+<?php ob_start(); ?>
 
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">

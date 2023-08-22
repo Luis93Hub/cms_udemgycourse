@@ -1,4 +1,6 @@
 <?php
+ session_start(); ?>
+<?php
 
 function redirect($location)
 {
@@ -55,7 +57,7 @@ function users_online()
     if (isset($_GET['onlineusers'])) {
             global $connection;
         if (!$connection) {
-            session_start();
+            //session_start();
             include("../includes/db.php");
         }
         $session = session_id();

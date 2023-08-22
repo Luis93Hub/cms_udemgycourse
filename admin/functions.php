@@ -167,7 +167,7 @@ function checkUserRole($table, $column, $role)
     global $connection;
     $query = "SELECT * FROM $table WHERE $column = '$role'";
     $select_all_subscribers = mysqli_query($connection, $query);
-      confirmQuery($select_all_subscribers);
+    confirmQuery($select_all_subscribers);
     return mysqli_num_rows($select_all_subscribers);
 }
 
@@ -253,7 +253,7 @@ function login_user($username, $password)
             $_SESSION['firstname']  = $db_user_firstname;
             $_SESSION['lastname']   = $db_user_lastname;
             $_SESSION['user_role']  = $db_user_role;
-            redirect("/admin/index.php");
+            redirect("/admin/");
         } else {
             return false;
         }

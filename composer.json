@@ -5,6 +5,11 @@
             "Luis\\Html\\": "src/"
         }
     },
+    "autoload-dev": {
+        "classmap": [
+            "classes"
+        ]
+    },
     "authors": [
         {
             "name": "DDEV User",

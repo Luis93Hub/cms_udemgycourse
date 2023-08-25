@@ -11,6 +11,9 @@ foreach ($db as $key => $value) {
     define(strtoupper($key), $value);
 }
 $connection = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+$query = "SET NAMES utf8";
+mysqli_query($connection, $query);
 // if (!$connection) {
 //     echo 'no se pudo conectar a la base de datos';
 // } else {

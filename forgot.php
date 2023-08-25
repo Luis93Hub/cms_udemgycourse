@@ -1,10 +1,16 @@
-<?php  include "includes/db.php"; ?>
+<?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+
+  include "includes/db.php"; ?>
 <?php  include "includes/header.php"; ?>
 <?php include "admin/functions.php" ?>
 
 <?php
 
-if (!ifItIsMethod('get') && !isset($_GET['forgot'])) {
+require './vendor/autoload.php';
+
+if (!isset($_GET['forgot'])) {
     redirect('index');
 }
 
@@ -19,6 +25,36 @@ if (ifItIsMethod('post')) {
                 mysqli_stmt_bind_param($stmt, "s", $email);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
+
+                /**
+                 * configure PHPMailer
+                 *
+                 */
+                $mail = new PHPMailer();
+                $mail->isSMTP();
+                $mail->Host = Config::SMTP_HOST;
+                $mail->Username = Config::SMTP_USER;
+                $mail->Password = Config::SMTP_PASSWORD;
+                $mail->Port = Config::SMTP_PORT;
+                $mail->SMTPSecure = 'tls';
+                $mail->SMTPAuth = true;
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
+
+                $mail->setFrom('luis93hernan2@gmail.com', 'Luis');
+                $mail->addAddress($email);
+                $mail->Subject = 'This is a test email';
+
+                $mail->Body = '<p>Please Click to reset your password
+                <a href="https://udemyphp.ddev.site/reset.php?email=' . $email . '&token=' . $token . ' ">https://udemyphp.ddev.site/reset.php?email=' . $email . '&token=' . $token . '</a>
+
+                </p>';
+
+                if ($mail->send()) {
+                    $emailSent = true;
+                } else {
+                    echo "NOT SENT";
+                }
             }
         }
     }
@@ -35,14 +71,13 @@ if (ifItIsMethod('post')) {
                     <div class="panel-body">
                         <div class="text-center">
 
-
+                        <?php
+                        if (!isset($emailSent)) :
+                            ?>
                                 <h3><i class="fa fa-lock fa-4x"></i></h3>
                                 <h2 class="text-center">Forgot Password?</h2>
                                 <p>You can reset your password here.</p>
                                 <div class="panel-body">
-
-
-
 
                                     <form id="register-form" role="form" autocomplete="off" class="form" method="post">
 
@@ -52,14 +87,19 @@ if (ifItIsMethod('post')) {
                                                 <input id="email" name="email" placeholder="email address" class="form-control"  type="email">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
+                                        <div class="form - group">
+                                            <input name="recover-submit" class="btn btn-lgbtn-primary btn-block" value="Reset Password" type="submit">
                                         </div>
 
                                         <input type="hidden" class="hide" name="token" id="token" value="">
                                     </form>
 
-                                </div><!-- Body-->
+                                </div>
+                                <!-- Body-->
+                        <?php else : ?>
+                                <h2>Please check your email</h2>
+
+                        <?php endif; ?>
 
                         </div>
                     </div>

@@ -2,6 +2,7 @@
 ob_start(); ?>
 <?php
 
+
 $db['db_host'] = "db";
 $db['db_user'] = "root";
 $db['db_password'] = "root";

@@ -1,15 +1,19 @@
-<?php  include "includes/db.php"; ?>
+<?php  include "./includes/db.php"; ?>
 <?php  include "includes/header.php"; ?>
 <?php include "./admin/functions.php"; ?>
 <?php
-// if (!isset($_GET['email']) && !isset($_GET['token'])) {
-//     redirect(('index'));
-// }
 
-$token = '42e76e8b7f6405a0d8d34a2322bb42ef534ec3f70013f63063b490a8cf68560dab04f2d1b385ec1b11ceeafc3560e58fa7ae';
+
+if (!isset($_GET['email']) && !isset($_GET['token'])) {
+    redirect(('index'));
+}
+
+
+// $email = 'brayan@gmail.com';
+// $token = '42e76e8b7f6405a0d8d34a2322bb42ef534ec3f70013f63063b490a8cf68560dab04f2d1b385ec1b11ceeafc3560e58fa7ae';
 
 if ($stmt = mysqli_prepare($connection, 'SELECT username, user_email, token FROM users WHERE token=?')) {
-    mysqli_stmt_bind_param($stmt, "s", $token);
+    mysqli_stmt_bind_param($stmt, "s", $_GET['token']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_bind_result($stmt, $username, $user_email, $token);
     mysqli_stmt_fetch($stmt);
@@ -19,13 +23,27 @@ if ($stmt = mysqli_prepare($connection, 'SELECT username, user_email, token FROM
     //     redirect('index');
     // }
 
+
+
     if (isset($_POST['password']) && isset($_POST['confirmPassword'])) {
+        if ($_POST['password'] === $_POST['confirmPassword']) {
+            $password = $_POST['password'];
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+            if ($stmt = mysqli_prepare($connection, "UPDATE users SET token='', user_password='{$hashedPassword}' WHERE user_email = ?")) {
+                mysqli_stmt_bind_param($stmt, "s", $_GET['email']);
+                mysqli_stmt_execute($stmt);
+                if (mysqli_stmt_affected_rows($stmt) >= 1) {
+                    redirect('login');
+                }
+                mysqli_stmt_close($stmt);
+            }
+        }
     }
 }
+
 ?>
 
 <div class="container">
-
 
 
     <div class="container">
@@ -75,8 +93,5 @@ if ($stmt = mysqli_prepare($connection, 'SELECT username, user_email, token FROM
     </div>
 
 
-<hr>
-
-<?php include "includes/footer.php";?>
-
+<hr>                $verified = true;
 </div> <!-- /.container -->

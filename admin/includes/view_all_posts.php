@@ -8,35 +8,35 @@ if (isset($_POST['checkBoxArray'])) {
             case 'published':
                 $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id = '{$postValuedId}' ";
                     $update_to_published_status = mysqli_query($connection, $query);
+                confirmQuery($update_to_published_status);
                 break;
 
             case 'draft':
                 $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id = '{$postValuedId}' ";
                     $update_to_draft_status = mysqli_query($connection, $query);
+                confirmQuery($update_to_draft_status);
                 break;
 
             case 'delete':
                 $query = "DELETE FROM posts WHERE post_id = {$postValuedId} ";
                 $update_to_delete_status = mysqli_query($connection, $query);
+                confirmQuery($update_to_delete_status);
                 break;
 
             case 'clone':
-                $query = "SELECT * FROM posts WHERE post_id = {$postValuedId} ";
+                $query = "SELECT * FROM posts WHERE post_id = '{$postValuedId}' ";
                 $select_post_query = mysqli_query($connection, $query);
 
                 while ($row = mysqli_fetch_array($select_post_query)) {
-                    $post_title = $row['post_title'];
-                    $post_category_id = $row['post_category_id'];
-                    $post_date = $row['post_date'];
-                    $post_author = $row['post_author'];
-                    $post_user = $row['post_user'];
-                    $post_status = $row['post_status'];
-                    $post_image = $row['post_image'];
-                    $post_tags = $row['post_tags'];
-                    $post_content = $row['post_content'];
-                    if (empty($post_tags)) {
-                        $post_tags = "No tags";
-                    }
+                    $post_title         = $row['post_title'];
+                    $post_category_id   = $row['post_category_id'];
+                    $post_date          = $row['post_date'];
+                    $post_author        = $row['post_author'];
+                    $post_user          = $row['post_user'];
+                    $post_status        = $row['post_status'];
+                    $post_image         = $row['post_image'];
+                    $post_tags          = $row['post_tags'];
+                    $post_content       = $row['post_content'];
                 }
 
                 $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_user, post_date, post_image, post_content, post_tags, post_status) ";
@@ -45,10 +45,6 @@ if (isset($_POST['checkBoxArray'])) {
                 if (!$copy_query) {
                     die("QUERY FAILED" . mysqli_error($connection));
                 }
-                break;
-
-            default:
-                # code...
                 break;
         }
     }
@@ -81,7 +77,7 @@ if (isset($_POST['checkBoxArray'])) {
                                 <th>Id</th>
                                 <th>Users</th>
                                 <th>Title</th>
-                                <th>Categories</th>
+                                <th>Category</th>
                                 <th>Status</th>
                                 <th>Images</th>
                                 <th>Tags</th>
@@ -104,19 +100,19 @@ $query .= " LEFT JOIN categories ON posts.post_category_id = categories.cat_id O
 $select_posts = mysqli_query($connection, $query);
 
 while ($row = mysqli_fetch_assoc($select_posts)) {
-    $post_id = $row['post_id'];
-    $post_author = $row['post_author'];
-    $post_user = $row['post_user'];
-    $post_title = $row['post_title'];
-    $post_category_id = $row['post_category_id'];
-    $post_status = $row['post_status'];
-    $post_image = $row['post_image'];
-    $post_tags = $row['post_tags'];
+    $post_id            = $row['post_id'];
+    $post_author        = $row['post_author'];
+    $post_user          = $row['post_user'];
+    $post_title         = $row['post_title'];
+    $post_category_id   = $row['post_category_id'];
+    $post_status        = $row['post_status'];
+    $post_image         = $row['post_image'];
+    $post_tags          = $row['post_tags'];
     $post_comment_count = $row['post_comment_count'];
-    $post_date = $row['post_date'];
-    $post_views_count = $row['post_views_count'];
-    $category_title = $row['cat_title'];
-    $category_id = $row['cat_id'];
+    $post_date          = $row['post_date'];
+    $post_views_count   = $row['post_views_count'];
+    $category_title     = $row['cat_title'];
+    $category_id        = $row['cat_id'];
 
     echo "<tr>";
 
@@ -161,8 +157,7 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
     } else {
         $count_comments = 0;
     }
-        // $comment_id = $row['comment_id'];
-        // $count_comments = mysqli_num_rows($send_comment_query);
+
 
         echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";
 
@@ -171,7 +166,7 @@ while ($row = mysqli_fetch_assoc($select_posts)) {
         echo "<td><a class='btn btn-primary' href='../post.php?p_id={$post_id}'>View Post</a></td>";
         echo "<td><a class='btn btn-info' href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>";
     ?>
-    <form action="" method="post">
+    <form  method="post">
         <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
         <?php
         echo '<td><input class="bt btn-danger" type="submit" name="delete" value="delete"></td>';

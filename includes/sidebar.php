@@ -1,10 +1,12 @@
 <?php
 
 if (ifItIsMethod('post')) {
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        login_user($_POST['username'], $_POST['password']);
-    } else {
-        redirect('../index');
+    if (isset($_POST['login'])) {
+        if (isset($_POST['username']) && isset($_POST['password'])) {
+            login_user($_POST['username'], $_POST['password']);
+        } else {
+            redirect('../index');
+        }
     }
 }
 
@@ -16,7 +18,7 @@ if (ifItIsMethod('post')) {
     <!-- Blog Search Well -->
     <div class="well">
         <h4>Blog Search</h4>
-        <form action="./sidebar.php" method="post">
+        <form action="./search.php" method="post">
             <div class="input-group">
                 <input name="search" type="text" class="form-control">
                 <span class="input-group-btn">
@@ -37,7 +39,7 @@ if (ifItIsMethod('post')) {
         <?php else : ?>
         <h4>Login</h4>
 
-        <form action="../login.php" method="post">
+        <form  method="post">
             <div class="form-group">
                 <input name="username" type="text" class="form-control" placeholder="Enter Username" >
             </div>

@@ -2,6 +2,15 @@
  session_start(); ?>
 <?php
 
+function imagePlaceholder($image = '')
+{
+    if (!$image) {
+        return '../images/no_image.jpeg';
+    } else {
+        return $image;
+    }
+}
+
 function redirect($location)
 {
     header("Location:" . $location);

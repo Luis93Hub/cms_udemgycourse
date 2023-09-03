@@ -103,7 +103,15 @@ if (isset($_GET['p_id'])) {
 
             if (isLoggedIn()) {?>
                 <div class="row">
-                    <p class="pull-right" ><a class="<?php echo userLikedThisPost($the_post_id) ? 'unlike' : 'like'; ?>" href=""> <span class="glyphicon glyphicon-thumbs-up"></span><?php echo userLikedThisPost($the_post_id) ? ' Unlike' : ' Like'; ?></a></p>
+                    <p class="pull-right" ><a
+                    class="<?php echo userLikedThisPost($the_post_id) ? 'unlike' : 'like'; ?>"
+                    href=""><span class="glyphicon glyphicon-thumbs-up"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="<?php echo userLikedThisPost($the_post_id) ? ' I liked this before' : ' Want to like it'; ?>"
+                    ></span>
+                    <?php echo userLikedThisPost($the_post_id) ? ' Unlike' : ' Like'; ?>
+                </a></p>
                 </div>
             <?php } else { ?>
                 <div class="row">
@@ -233,28 +241,24 @@ if (isset($_GET['p_id'])) {
 <?php include 'includes/footer.php'; ?>
 
     <script>
-
         $(document).ready(function(){
-            var post_id = <?php echo $the_post_id; ?>
 
+            $("[data-toggle='tooltip']").tooltip();
+            var post_id = <?php echo $the_post_id; ?>;
             var user_id = <?php echo loggedInUserId(); ?>;
 
-            //like
+            //lIKING
             $('.like').click(function(){
-
                 $.ajax({
-
                     url: "/post.php?p_id=<?php echo $the_post_id; ?>",
                     type: 'post',
                     data: {
                         'liked': 1,
                         'post_id': post_id,
                         'user_id': user_id
-
                     }
                 });
             });
-
             //unlike
             $('.unlike').click(function(){
 

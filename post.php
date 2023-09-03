@@ -6,6 +6,46 @@
     <!-- Navigation -->
 <?php include './includes/navigation.php'; ?>
 
+<?php
+if (isset($_POST['liked'])) {
+    $post_id = $_POST['post_id'];
+    $user_id = $_POST['user_id'];
+
+    //1 = FETCHING THE RIGHT POST
+
+    $query = "SELECT * FROM posts WHERE post_id=$post_id";
+    $postResult = mysqli_query($connection, $query);
+    $post = mysqli_fetch_array($postResult);
+    $likes = $post['likes'];
+
+    // 2 = UPDATE - INCREMENTING WITH LIKES
+    mysqli_query($connection, "UPDATE posts SET likes=$likes+1 WHERE post_id=$post_id");
+
+    //3 = CREATE LIKES FOR POST
+    mysqli_query($connection, "INSERT INTO likes(user_id, post_id) VALUES ($user_id, $post_id)");
+}
+
+if (isset($_POST['unliked'])) {
+    $post_id = $_POST['post_id'];
+    $user_id = $_POST['user_id'];
+
+    //1 = FETCHING THE RIGHT POST
+
+    $query = "SELECT * FROM posts WHERE post_id=$post_id";
+    $postResult = mysqli_query($connection, $query);
+    $post = mysqli_fetch_array($postResult);
+    $likes = $post['likes'];
+
+    // 2 = DELETE LIKES
+    mysqli_query($connection, "DELETE FROM likes WHERE post_id=$post_id AND user_id=$user_id");
+
+    //3 = UPDATE DECREMENTING WITH LIKES
+    mysqli_query($connection, "UPDATE posts SET likes=$likes-1 WHERE post_id=$post_id");
+
+    exit();
+}
+?>
+
     <!-- Page Content -->
 <div class="container">
     <div class="row">
@@ -59,6 +99,20 @@ if (isset($_GET['p_id'])) {
                 <p><?php echo $post_content ?></p>
                 <hr>
 
+                <div class="row">
+                    <p class="pull-right" ><a class="like" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span>Like</a></p>
+                </div>
+                <div class="row">
+                    <p class="pull-right" ><a class="unlike" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span>Unlike</a></p>
+                </div>
+                <div class="row">
+                    <p class="pull-right" >Like: 10</p>
+                </div>
+                <div class="clearfix"></div>
+
+
+
+
         <?php }
 
 
@@ -86,10 +140,6 @@ if (isset($_GET['p_id'])) {
                 if (!$create_comment_query) {
                     die('QUERY FAILED' . mysqli_error($connection));
                 }
-
-                // $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
-                // $query .= "WHERE post_id = $the_post_id ";
-                // $update_comment_count = mysqli_query($connection, $query);
             } else {
                 echo "<script>alert('Fields cannot be empty')</script>";
             }
@@ -118,10 +168,11 @@ if (isset($_GET['p_id'])) {
 
                 <hr>
 
+
                 <!-- Posted Comments -->
 
         <?php
-        $query = "SELECT * FROM comments WHERE comment_post_id = {$the_post_id } ";
+        $query = "SELECT * FROM comments WHERE comment_post_id = {$the_post_id} ";
         $query .= "AND comment_status = 'approved' ";
         $query .= "ORDER BY comment_id DESC ";
         $select_comment_query = mysqli_query($connection, $query);
@@ -171,3 +222,45 @@ if (isset($_GET['p_id'])) {
         <!-- /.row -->
     <hr>
 <?php include 'includes/footer.php'; ?>
+
+    <script>
+
+        $(document).ready(function(){
+            var post_id = <?php echo $the_post_id; ?>
+
+            var user_id = 26;
+
+            //like
+            $('.like').click(function(){
+
+                $.ajax({
+
+                    url: "/post.php?p_id=<?php echo $the_post_id; ?>",
+                    type: 'post',
+                    data: {
+                        'liked': 1,
+                        'post_id': post_id,
+                        'user_id': user_id
+
+                    }
+                });
+            });
+
+            //unlike
+            $('.unlike').click(function(){
+
+                $.ajax({
+
+                    url: "/post.php?p_id=<?php echo $the_post_id; ?>",
+                    type: 'post',
+                    data: {
+                        'unliked': 1,
+                        'post_id': post_id,
+                        'user_id': user_id
+
+                    }
+                });
+            });
+
+        });
+    </script>

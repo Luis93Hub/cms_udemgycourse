@@ -93,5 +93,5 @@ if ($stmt = mysqli_prepare($connection, 'SELECT username, user_email, token FROM
     </div>
 
 
-<hr>                $verified = true;
+<hr>
 </div> <!-- /.container -->

@@ -19,10 +19,11 @@ if (isset($_POST['liked'])) {
     $likes = $post['likes'];
 
     // 2 = UPDATE - INCREMENTING WITH LIKES
-    mysqli_query($connection, "UPDATE posts SET likes=$likes+1 WHERE post_id=$post_id");
+        mysqli_query($connection, "UPDATE posts SET likes=$likes+1 WHERE post_id=$post_id");
 
     //3 = CREATE LIKES FOR POST
     mysqli_query($connection, "INSERT INTO likes(user_id, post_id) VALUES ($user_id, $post_id)");
+    exit();
 }
 
 if (isset($_POST['unliked'])) {
@@ -98,22 +99,30 @@ if (isset($_GET['p_id'])) {
                 <hr>
                 <p><?php echo $post_content ?></p>
                 <hr>
+            <?php
+
+            if (isLoggedIn()) {?>
+                <div class="row">
+                    <p class="pull-right" ><a class="<?php echo userLikedThisPost($the_post_id) ? 'unlike' : 'like'; ?>" href=""> <span class="glyphicon glyphicon-thumbs-up"></span><?php echo userLikedThisPost($the_post_id) ? ' Unlike' : ' Like'; ?></a></p>
+                </div>
+            <?php } else { ?>
+                <div class="row">
+                    <p class="pull-right login-to-post">You need to <a href="/login">Login</a> to like </p>
+                </div>
+            <?php }
+            ?>
+
 
                 <div class="row">
-                    <p class="pull-right" ><a class="like" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span>Like</a></p>
-                </div>
-                <div class="row">
-                    <p class="pull-right" ><a class="unlike" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span>Unlike</a></p>
-                </div>
-                <div class="row">
-                    <p class="pull-right" >Like: 10</p>
+                    <p class="pull-right likes" >Like: <?php getPostLikes($the_post_id); ?></p>
                 </div>
                 <div class="clearfix"></div>
 
 
 
 
-        <?php }
+                <?php
+        }
 
 
         ?>
@@ -188,7 +197,7 @@ if (isset($_GET['p_id'])) {
             ?>
                 <!-- Comment -->
                 <div class="media">
-                    <a class="pull-left" href="#">
+                    <a class="pull-left" href="">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
                     </a>
                     <div class="media-body">
@@ -228,7 +237,7 @@ if (isset($_GET['p_id'])) {
         $(document).ready(function(){
             var post_id = <?php echo $the_post_id; ?>
 
-            var user_id = 26;
+            var user_id = <?php echo loggedInUserId(); ?>;
 
             //like
             $('.like').click(function(){

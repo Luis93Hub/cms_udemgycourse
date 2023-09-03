@@ -17,6 +17,12 @@ function redirect($location)
     exit;
 }
 
+function query($query)
+{
+    global $connection;
+    return mysqli_query($connection, $query);
+}
+
 function ifItIsMethod($method = null)
 {
     if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
@@ -29,6 +35,18 @@ function isLoggedIn()
 {
     if (isset($_SESSION['user_role'])) {
         return true;
+    }
+    return false;
+}
+
+function loggedInUserId()
+{
+    if (isLoggedIn()) {
+        $result = query("SELECT * FROM users WHERE username='" . $_SESSION['username'] . "'");
+        $user = mysqli_fetch_array($result);
+        if (mysqli_num_rows($result) >= 1) {
+            return $user['user_id'];
+        }
     }
     return false;
 }

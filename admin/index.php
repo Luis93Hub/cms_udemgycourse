@@ -4,6 +4,11 @@
 $post_count = count_records(get_all_user_posts());
 $comment_count = count_records(get_all_posts_user_comments());
 $categories_count = count_records(get_all_user_categories());
+$post_published_count = count_records(get_all_user_published_posts());
+$post_draft_counts = count_records(get_all_user_draft_posts());
+$approved_comment_count = count_records(get_all_approved_posts_comments());
+$unapproved_comment_count = count_records(get_all_unapproved_posts_comments());
+$category_count = 0;
 ?>
     <div id="wrapper">
         <!-- Navigation -->
@@ -93,10 +98,7 @@ $categories_count = count_records(get_all_user_categories());
 </div>
                 <!-- /.row -->
     <?php
-    $post_published_count = checkStatus('posts', 'post_status', 'published');
-    $post_draft_counts = checkStatus('posts', 'post_status', 'draft');
-    $unapproved_comment_count = checkStatus('comments', 'comment_status', 'unapproved');
-    $subscriber_count = checkUserRole('users', 'user_role', 'subscriber');
+
     ?>
                  <div class="rows">
                     <script>
@@ -107,8 +109,8 @@ function drawColColors() {
        var data = google.visualization.arrayToDataTable([
          ['Element', 'Count', { role: 'style' }],
 <?php
-    $element_text = ['All Posts', 'Active Posts', 'Draft Posts' , 'Comments', 'Pending Comments', 'Categories'];
-    $element_count = [$post_count, $post_published_count, $post_draft_counts, $comment_count, $unapproved_comment_count, $category_count];
+    $element_text = ['All Posts', 'Active Posts', 'Draft Posts' , 'Comments', 'Approved Comments','Pending Comments', 'Categories'];
+    $element_count = [$post_count, $post_published_count, $post_draft_counts, $comment_count, $approved_comment_count, $unapproved_comment_count, $category_count];
 for ($i = 0; $i < 6; $i++) {
     echo "['{$element_text[$i]}'" . "," . "{$element_count[$i]}" . "," . "'#b87333'], ";
 }

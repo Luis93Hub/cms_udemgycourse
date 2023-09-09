@@ -78,6 +78,25 @@ function get_all_user_categories()
     return query("SELECT * FROM categories WHERE user_id=" . loggedInUserId() . "");
 }
 
+function get_all_user_published_posts()
+{
+    return query("SELECT * FROM posts WHERE user_id=" . loggedInUserId() . " AND post_status='published'");
+}
+
+function get_all_user_draft_posts()
+{
+    return query("SELECT * FROM posts WHERE user_id=" . loggedInUserId() . " AND post_status='draft'");
+}
+
+function get_all_approved_posts_comments()
+{
+    return query("SELECT * FROM posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=" . loggedInUserId() . " AND comment_status='approved' ");
+}
+function get_all_unapproved_posts_comments()
+{
+    return query("SELECT * FROM posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=" . loggedInUserId() . " AND comment_status='unapproved' ");
+}
+
 // END USER SPECIFIC HELPERS
 function ifItIsMethod($method = null)
 {

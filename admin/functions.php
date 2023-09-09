@@ -30,14 +30,21 @@ function fetchRecords($result)
     return mysqli_fetch_array($result);
 }
 
+function count_records($result)
+{
+    return mysqli_num_rows($result);
+}
 // END DATABASE HELPERS
 
 // GENERAL HELPERS
-
 function get_user_name()
 {
     return isset($_SESSION['username']) ? $_SESSION['username'] : null;
 }
+// END GENERAL HELPERS
+
+// END GENERAL HELPERS
+
 
 // AUTHENTICATION HELPER
 function is_admin()
@@ -55,6 +62,23 @@ function is_admin()
 }
 // END AUTHENTICATION HELPER
 
+// USER SPECIFIC HELPERS
+function get_all_user_posts()
+{
+    return query("SELECT * FROM posts WHERE user_id=" . loggedInUserId() . "");
+}
+
+function get_all_posts_user_comments()
+{
+    return query("SELECT * FROM posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=" . loggedInUserId() . "");
+}
+
+function get_all_user_categories()
+{
+    return query("SELECT * FROM categories WHERE user_id=" . loggedInUserId() . "");
+}
+
+// END USER SPECIFIC HELPERS
 function ifItIsMethod($method = null)
 {
     if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
@@ -120,8 +144,6 @@ function set_message($msg)
     }
 }
 
-
-
 function users_online()
 {
 
@@ -149,7 +171,7 @@ function users_online()
         $count_user = mysqli_num_rows($users_online_query);
 
         echo $count_user;
-    }// get request isset()
+    }
 }
 
 users_online();
@@ -189,12 +211,12 @@ function findAllCategories()
     while ($row = mysqli_fetch_assoc($select_categories)) {
         $cat_id = $row['cat_id'];
         $cat_title = $row['cat_title'];
-        echo " < tr > ";
-        echo " < td > {$cat_id} < / td > ";
-        echo " < td > {$cat_title} < / td > ";
-        echo " < td > < a href = 'categories.php?delete={$cat_id}' > Delete < / a > < / td > ";
-        echo " < td > < a href = 'categories.php?edit={$cat_id}' > Edit < / a > < / td > ";
-        echo " < / tr > ";
+        echo "<tr>";
+        echo "<td>{$cat_id}</td>";
+        echo "<td>{$cat_title}</td>";
+        echo "<td><a href='categories.php?delete={$cat_id}'>Delete</a></td>";
+        echo "<td><a href='categories.php?edit={$cat_id}'>Edit</a></td>";
+        echo "</tr>";
     }
 }
 
@@ -205,7 +227,7 @@ function deleteCategories()
         $the_cat_id = $_GET ['delete'];
         $query = "DELETE FROM categories WHERE cat_id = {$the_cat_id}";
         $delete_query = mysqli_query($connection, $query);
-        header("Location: categories . php");
+        header("Location: categories.php");
     }
 }
 

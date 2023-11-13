@@ -13,7 +13,7 @@ if (isset($_GET['lang']) && !empty($_GET['lang'])) {
 if (isset($_SESSION['lang'])) {
     include "admin/includes/languages/" . $_SESSION['lang'] . ".php";
 } else {
-    include "includes/languages/en.php";
+    include "./admin/includes/languages/en.php";
 }
 
 
